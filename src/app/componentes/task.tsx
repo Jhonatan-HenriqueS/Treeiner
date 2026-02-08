@@ -14,19 +14,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { Check, Trash2Icon } from "lucide-react";
 
-type TaskProps = {
+export type TaskProps = {
+  id: string;
   title: string;
   description?: string;
-  dateInitial: Date;
-  date: Date;
+  dateInitial: string;
+  date: string;
   checkActive: boolean;
   dangerZone: boolean;
-  dateUser: Date;
-  setDateInitial: (date: Date) => void;
+  dateUser: string;
   setCheckActive: (active: boolean) => void;
 };
 
 const Task = ({
+  id,
   title,
   description,
   dateInitial,
@@ -34,17 +35,25 @@ const Task = ({
   checkActive,
   dangerZone,
   dateUser,
-  setDateInitial,
   setCheckActive,
 }: TaskProps) => {
+  const initialDate = new Date(dateInitial);
+  const NewDates = new Date(date);
+  const userDate = new Date(dateUser);
+
   return (
     <section className="bg-gray-200 p-4 rounded-4xl my-4 w-full flex flex-col gap-3">
       <div className="flex justify-between">
         <h2 className="text-center font-medium">{title}</h2>
-        <p className=" flex gap-2">
-          <p> {dateInitial?.toLocaleDateString("pt-BR")}</p>
-          <p>{dateInitial?.toLocaleTimeString("pt-BR")}</p>
-        </p>
+        <div className=" flex gap-2">
+          <p> {initialDate?.toLocaleDateString("pt-BR")}</p>
+          <p>
+            {initialDate?.toLocaleTimeString("pt-BR", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
+        </div>
       </div>
       <div className="flex justify-between items-center">
         <p className="ml-4 text-gray-700 max-w-[70%] overflow-hidden text-ellipsis line-clamp-2  ">
@@ -83,12 +92,7 @@ const Task = ({
                 <AlertDialogCancel variant="outline">
                   Cancelar
                 </AlertDialogCancel>
-                <AlertDialogAction
-                  variant="destructive"
-                  onClick={() => {
-                    setDateInitial(new Date());
-                  }}
-                >
+                <AlertDialogAction variant="destructive">
                   Deletar
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -104,8 +108,13 @@ const Task = ({
         )}
       </div>
       <div className="flex gap-2 justify-center">
-        <p>Prazo de entrega: {date?.toLocaleDateString()}</p>
-        <p>{dateUser?.toLocaleTimeString("pt-BR")}</p>
+        <p>Prazo de entrega: {NewDates?.toLocaleDateString()}</p>
+        <p>
+          {userDate?.toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </p>
       </div>
     </section>
   );

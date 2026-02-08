@@ -21,7 +21,9 @@ import Inputs from "./inputs";
 
 const Header = () => {
   const [date, setDate] = React.useState<Date>(new Date()); //Seleciona a data atual
-  const [dateInitial, setDateInitial] = React.useState<Date>(new Date());
+  const [dateInitial, setDateInitial] = React.useState<string>(
+    new Date().toISOString(),
+  ); //Seleciona a data atual para a data inicial da tarefa
 
   const [title, setTitle] = useState<string>(""); //Guarda o título inserido pelo usuário
   const [description, setDescription] = useState<string>(""); //Guarda a descrição inserida pelo usuário
@@ -30,6 +32,8 @@ const Header = () => {
   const [dateUser, setDateUser] = useState<Date>(new Date()); //Guarda a data selecionada pelo usuário
 
   const checkEnable = title.trim().length > 0; //Verifica se o título não está vazio para habilitar o botão
+
+  const dateObj = new Date(dateInitial);
 
   return (
     <main>
@@ -50,7 +54,7 @@ const Header = () => {
               disabled={!checkEnable}
               onClick={() => {
                 setDangerZone(false);
-                setDateInitial(new Date());
+                setDateInitial(new Date().toISOString());
               }}
             >
               <Plus className="mx-2" />
@@ -63,12 +67,9 @@ const Header = () => {
               </AlertDialogTitle>
               <section className="flex flex-col gap-5">
                 <div>
-                  <Input
-                    className="bg-primary disabled:bg-primary text-white text-center border-none p-6 rounded-3xl
-            placeholder:text-gray-500 focus:placeholder:opacity-40 transition-all
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary"
+                  <Inputs
                     type="text"
-                    placeholder={title}
+                    placeholder="Insira o título"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                   />
@@ -77,10 +78,7 @@ const Header = () => {
                   <h2 className="w-full text-center font-medium ">
                     Descreva como deverá ser esta tarefa:
                   </h2>
-                  <Input
-                    className="mt-2 bg-primary disabled:bg-primary text-white text-center border-none p-6 rounded-3xl
-            placeholder:text-gray-500 focus:placeholder:opacity-40 transition-all
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary"
+                  <Inputs
                     type="text"
                     placeholder="Descrição da tarefa"
                     value={description}
@@ -91,10 +89,7 @@ const Header = () => {
                   <h2 className="w-full text-center font-medium ">
                     Qual o horario de entrega desta tarefa?:
                   </h2>
-                  <Input
-                    className="mt-2 bg-primary disabled:bg-primary flex justify-center text-white text-center border-none p-6 rounded-3xl
-            placeholder:text-gray-500 focus:placeholder:opacity-40 transition-all
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary"
+                  <Inputs
                     type="time"
                     placeholder={
                       dateUser?.toLocaleTimeString("pt-BR") ||
@@ -122,13 +117,14 @@ const Header = () => {
               </section>
             </AlertDialogHeader>
             <Task
+              id="123"
               title={title}
               description={description}
               dateInitial={dateInitial}
-              date={date}
+              date={date.toISOString()}
               checkActive={checkActive}
               dangerZone={dangerZone}
-              dateUser={dateUser}
+              dateUser={dateUser.toISOString()}
               setDateInitial={setDateInitial}
               setCheckActive={setCheckActive}
             />
