@@ -44,126 +44,157 @@ const Header = () => {
       checkActive,
       dangerZone,
       dateUser: dateUser.toISOString(),
-      setCheckActive,
+      onCheck: () => checkTask(newTask.id),
+      deleteTask: () => deleteTask(newTask.id),
     };
     setTaskList((prev) => [...prev, newTask]);
   };
 
+  const checkTask = (id: string) => {
+    //Função para marcar a tarefa como finalizada
+    setTaskList((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, checkActive: true } : task,
+      ),
+    );
+  };
+
+  const deleteTask = (id: string) => {
+    //Função para deletar a tarefa
+    setTaskList((prev) => prev.filter((task) => task.id !== id));
+  };
+
   return (
-    <main>
-      <h1 className="text-lg font-medium text-center">Adicione sua tarefa</h1>
-      <section className="flex items-center mt-6 gap-3">
-        <div>
-          <Inputs
-            type="text"
-            placeholder="Insira o título"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              className="p-6 rounded-3xl transition-all"
-              disabled={!checkEnable}
-              onClick={() => {
-                setDangerZone(false);
-                setDateInitial(new Date().toISOString());
-              }}
-            >
-              <Plus className="mx-2" />
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent className="flex flex-col justify-center items-center p-6 ">
-            <AlertDialogHeader>
-              <AlertDialogTitle className="w-full text-center">
-                Descreva como deverá ser seu check-list
-              </AlertDialogTitle>
-              <section className="flex flex-col gap-5">
-                <div>
-                  <Inputs
-                    type="text"
-                    placeholder="Insira o título"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <h2 className="w-full text-center font-medium ">
-                    Descreva como deverá ser esta tarefa:
-                  </h2>
-                  <Inputs
-                    type="text"
-                    placeholder="Descrição da tarefa"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <h2 className="w-full text-center font-medium ">
-                    Qual o horario de entrega desta tarefa?:
-                  </h2>
-                  <Inputs
-                    type="time"
-                    placeholder={
-                      dateUser?.toLocaleTimeString("pt-BR") ||
-                      "Selecione o horário"
-                    }
-                    value={dateUser?.toLocaleTimeString("pt-BR") || ""}
-                    onChange={(e) =>
-                      setDateUser(new Date(`1970-01-01T${e.target.value}`))
-                    }
-                  />
-                </div>
-                <div className="flex flex-col justify-center items-center">
-                  <h2 className="w-full text-center font-medium mb-2">
-                    Para quando deverá ser finalizado esta tarefa?
-                  </h2>
-                  <Calendar
-                    mode="single"
-                    required={true}
-                    selected={date}
-                    onSelect={(d) => d && setDate(d)}
-                    className="rounded-lg border "
-                    captionLayout="dropdown"
-                  />
-                </div>
-              </section>
-            </AlertDialogHeader>
-            <Task
-              id="1"
-              title={title}
-              description={description}
-              dateInitial={dateInitial}
-              date={date.toISOString()}
-              checkActive={checkActive}
-              dangerZone={dangerZone}
-              dateUser={dateUser.toISOString()}
-              setCheckActive={setCheckActive}
+    <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-600 ">
+      <header className="rounded-4xl bg-gray-400 py-6 px-20 h-[80vh] w-[40vw]">
+        <h1 className="text-lg font-medium text-center">Adicione sua tarefa</h1>
+        <section className="flex items-center mt-6 gap-3 justify-center">
+          <div>
+            <Inputs
+              type="text"
+              placeholder="Insira o título"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-              <AlertDialogAction>Criar tarefa</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </section>
-      <section>
-        {taskList.map((task) => (
-          <Task
-            key={task.id}
-            id={task.id}
-            title={task.title}
-            description={task.description}
-            dateInitial={task.dateInitial}
-            date={task.date}
-            checkActive={task.checkActive}
-            dangerZone={task.dangerZone}
-            dateUser={task.dateUser}
-            setCheckActive={task.setCheckActive}
-          />
-        ))}
-      </section>
+          </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                className="p-6 rounded-3xl transition-all"
+                disabled={!checkEnable}
+                onClick={() => {
+                  setDangerZone(true);
+                  setDateInitial(new Date().toISOString());
+                }}
+              >
+                <Plus className="mx-2" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="flex flex-col justify-center items-center p-6 ">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="w-full text-center">
+                  Descreva como deverá ser seu check-list
+                </AlertDialogTitle>
+                <section className="flex flex-col gap-5">
+                  <div>
+                    <Inputs
+                      type="text"
+                      placeholder="Insira o título"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <h2 className="w-full text-center font-medium ">
+                      Descreva como deverá ser esta tarefa:
+                    </h2>
+                    <Inputs
+                      type="text"
+                      placeholder="Descrição da tarefa"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <h2 className="w-full text-center font-medium ">
+                      Qual o horario de entrega desta tarefa?:
+                    </h2>
+                    <Inputs
+                      type="time"
+                      placeholder={
+                        dateUser?.toLocaleTimeString("pt-BR") ||
+                        "Selecione o horário"
+                      }
+                      value={dateUser?.toLocaleTimeString("pt-BR") || ""}
+                      onChange={(e) =>
+                        setDateUser(new Date(`1970-01-01T${e.target.value}`))
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center items-center">
+                    <h2 className="w-full text-center font-medium mb-2">
+                      Para quando deverá ser finalizado esta tarefa?
+                    </h2>
+                    <Calendar
+                      mode="single"
+                      required={true}
+                      selected={date}
+                      onSelect={(d) => d && setDate(d)}
+                      className="rounded-lg border "
+                      captionLayout="dropdown"
+                    />
+                  </div>
+                </section>
+              </AlertDialogHeader>
+              <Task
+                id="1"
+                title={title}
+                description={description}
+                dateInitial={dateInitial}
+                date={date.toISOString()}
+                checkActive={checkActive}
+                dangerZone={dangerZone}
+                dateUser={dateUser.toISOString()}
+                onCheck={() => checkTask("1")}
+                deleteTask={() => deleteTask("1")}
+              />
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setDangerZone(false)}>
+                  Cancelar
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => {
+                    addTask();
+                    setDangerZone(false);
+                    setTitle("");
+                    setDescription("");
+                    setDateUser(new Date());
+                  }}
+                >
+                  Criar tarefa
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </section>
+        <section className="mt-10">
+          {taskList.map((task) => (
+            <Task
+              key={task.id}
+              id={task.id}
+              title={task.title}
+              description={task.description}
+              dateInitial={task.dateInitial}
+              date={task.date}
+              checkActive={task.checkActive}
+              dangerZone={task.dangerZone}
+              dateUser={task.dateUser}
+              onCheck={() => checkTask(task.id)}
+              deleteTask={() => deleteTask(task.id)}
+            />
+          ))}
+        </section>
+      </header>
     </main>
   );
 };

@@ -23,11 +23,11 @@ export type TaskProps = {
   checkActive: boolean;
   dangerZone: boolean;
   dateUser: string;
-  setCheckActive: (active: boolean) => void;
+  onCheck: () => void;
+  deleteTask?: () => void;
 };
 
 const Task = ({
-  id,
   title,
   description,
   dateInitial,
@@ -35,19 +35,26 @@ const Task = ({
   checkActive,
   dangerZone,
   dateUser,
-  setCheckActive,
+  onCheck,
+  deleteTask,
 }: TaskProps) => {
   const initialDate = new Date(dateInitial);
   const NewDates = new Date(date);
   const userDate = new Date(dateUser);
 
   return (
-    <section className="bg-gray-200 p-4 rounded-4xl my-4 w-full flex flex-col gap-3">
+    <section className="bg-gray-200 p-4 rounded-4xl my-4 w-full flex flex-col gap-4">
       <div className="flex justify-between">
-        <h2 className="text-center font-medium">{title}</h2>
-        <div className=" flex gap-2">
-          <p> {initialDate?.toLocaleDateString("pt-BR")}</p>
-          <p>
+        <h2
+          className={`text-center font-medium  max-w-[40%] overflow-hidden text-ellipsis whitespace-nowrap  ${checkActive ? "text-green-600" : ""}`}
+        >
+          {title}
+        </h2>
+        <div className=" flex gap-2 ">
+          <p className="text-gray-500">
+            {initialDate?.toLocaleDateString("pt-BR")}
+          </p>
+          <p className="text-gray-500">
             {initialDate?.toLocaleTimeString("pt-BR", {
               hour: "2-digit",
               minute: "2-digit",
@@ -56,29 +63,20 @@ const Task = ({
         </div>
       </div>
       <div className="flex justify-between items-center">
-        <p className="ml-4 text-gray-700 max-w-[70%] overflow-hidden text-ellipsis line-clamp-2  ">
+        <p className="ml-4 text-gray-700 max-w-[60%] overflow-hidden text-ellipsis line-clamp-2  ">
           {description}
         </p>
 
         {checkActive ? (
           <AlertDialog>
-            {dangerZone ? (
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="destructive"
-                  className=" bg-red-600 hover:bg-red-700 p-3 mr-4 rounded-full cursor-pointer transition-all "
-                >
-                  <Trash2Icon className="text-gray-200" />
-                </Button>
-              </AlertDialogTrigger>
-            ) : (
+            <AlertDialogTrigger asChild>
               <Button
                 variant="destructive"
                 className=" bg-red-600 hover:bg-red-700 p-3 mr-4 rounded-full cursor-pointer transition-all "
               >
                 <Trash2Icon className="text-gray-200" />
               </Button>
-            )}
+            </AlertDialogTrigger>
 
             <AlertDialogContent size="sm">
               <AlertDialogHeader>
@@ -92,7 +90,7 @@ const Task = ({
                 <AlertDialogCancel variant="outline">
                   Cancelar
                 </AlertDialogCancel>
-                <AlertDialogAction variant="destructive">
+                <AlertDialogAction variant="destructive" onClick={deleteTask}>
                   Deletar
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -101,14 +99,16 @@ const Task = ({
         ) : (
           <Button
             className={`p-3 mr-4 bg-green-600 hover:bg-green-700 rounded-full cursor-pointer transition-all `}
-            onClick={() => setCheckActive(true)}
+            onClick={onCheck}
           >
             <Check className="text-gray-200" />
           </Button>
         )}
       </div>
-      <div className="flex gap-2 justify-center">
-        <p>Prazo de entrega: {NewDates?.toLocaleDateString()}</p>
+      <div
+        className={`flex gap-2 justify-center ${checkActive ? "text-green-600" : ""}`}
+      >
+        <p>Prazo: {NewDates?.toLocaleDateString()}</p>
         <p>
           {userDate?.toLocaleTimeString("pt-BR", {
             hour: "2-digit",
