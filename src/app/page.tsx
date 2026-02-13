@@ -26,7 +26,7 @@ const Header = () => {
 
   const [title, setTitle] = useState<string>(""); //Guarda o título inserido pelo usuário
   const [description, setDescription] = useState<string>(""); //Guarda a descrição inserida pelo usuário
-  const [checkActive, setCheckActive] = useState<boolean>(false); //Guarda a informação se a tarefa foi finalizada
+  const [checkActive] = useState<boolean>(false); //Guarda a informação se a tarefa foi finalizada
   const [dangerZone, setDangerZone] = useState<boolean>(true); //Guarda a informação se a zona de perigo está ativa
   const [dateUser, setDateUser] = useState<Date>(new Date()); //Guarda a data selecionada pelo usuário
 
@@ -66,7 +66,7 @@ const Header = () => {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-600 ">
-      <header className="rounded-4xl bg-gray-400 py-6 px-20 h-[80vh] w-[40vw]">
+      <div className="rounded-4xl bg-gray-400 py-6 px-20 h-[80vh] w-[40vw] overflow-y-auto no-scrollbar">
         <h1 className="text-lg font-medium text-center">Adicione sua tarefa</h1>
         <section className="flex items-center mt-6 gap-3 justify-center">
           <div>
@@ -194,7 +194,7 @@ const Header = () => {
             />
           ))}
         </section>
-      </header>
+      </div>
     </main>
   );
 };
