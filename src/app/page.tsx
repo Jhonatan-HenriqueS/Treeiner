@@ -15,8 +15,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import Task, { TaskProps } from "./componentes/task";
+import Task from "./componentes/task";
 import Inputs from "./componentes/inputs";
+
+type TaskData = {
+  id: string;
+  title: string;
+  description?: string;
+  dateInitial: string;
+  date: string;
+  checkActive: boolean;
+  dangerZone: boolean;
+  dateUser: string;
+};
 
 const Header = () => {
   const [date, setDate] = React.useState<Date>(new Date()); //Seleciona a data atual
@@ -30,13 +41,17 @@ const Header = () => {
   const [dangerZone, setDangerZone] = useState<boolean>(true); //Guarda a informação se a zona de perigo está ativa
   const [dateUser, setDateUser] = useState<Date>(new Date()); //Guarda a data selecionada pelo usuário
 
-  const [taskList, setTaskList] = useState<TaskProps[]>([]); //Guarda a lista de tarefas
+  const [taskList, setTaskList] = useState<TaskData[]>([]); //Guarda a lista de tarefas
 
   const checkEnable = title.trim().length > 0; //Verifica se o título não está vazio para habilitar o botão
 
   const addTask = () => {
-    const newTask: TaskProps = {
-      id: crypto.randomUUID(),
+    //Função para adicionar uma nova tarefa
+
+    const id = crypto.randomUUID(); //Gera um ID único para a tarefa
+
+    const newTask: TaskData = {
+      id,
       title,
       description,
       dateInitial: new Date().toISOString(),
@@ -44,8 +59,6 @@ const Header = () => {
       checkActive,
       dangerZone,
       dateUser: dateUser.toISOString(),
-      onCheck: () => checkTask(newTask.id),
-      deleteTask: () => deleteTask(newTask.id),
     };
     setTaskList((prev) => [...prev, newTask]);
   };
@@ -63,6 +76,19 @@ const Header = () => {
     //Função para deletar a tarefa
     setTaskList((prev) => prev.filter((task) => task.id !== id));
   };
+
+  React.useEffect(() => {
+    const storageTasks = localStorage.getItem("tasks");
+
+    if (storageTasks) {
+      //Mesmo que usar storageTasks === true
+      setTaskList(JSON.parse(storageTasks));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(taskList));
+  }, [taskList]);
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-600 ">
