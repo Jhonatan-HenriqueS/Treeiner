@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Check, Trash2Icon } from "lucide-react";
+import { toast } from "sonner";
 
 export type TaskProps = {
   id: string;
@@ -43,7 +44,18 @@ const Task = ({
   const userDate = new Date(dateUser);
 
   return (
-    <section className="bg-gray-200 p-4 rounded-4xl my-4 w-full flex flex-col gap-4">
+    <section
+      className="bg-gray-200 p-4 rounded-4xl my-4 w-full flex flex-col gap-4 hover:cursor-pointer "
+      onClick={() =>
+        toast(
+          <div>
+            <h3 className="font-bold">Informações da Tarefa: </h3>
+            <p className="font-medium">{title}</p>
+            <p>{description}</p>
+          </div>,
+        )
+      }
+    >
       <div className="flex justify-between">
         <h2
           className={`text-center font-medium  max-w-[40%] overflow-hidden text-ellipsis whitespace-nowrap  ${checkActive ? "text-green-600" : ""}`}
@@ -63,7 +75,7 @@ const Task = ({
         </div>
       </div>
       <div className="flex justify-between items-center">
-        <p className="ml-4 text-gray-700 max-w-[60%] overflow-hidden text-ellipsis line-clamp-2  ">
+        <p className="ml-4 text-gray-700 max-w-[50vw] overflow-hidden text-ellipsis line-clamp-2  ">
           {description}
         </p>
 
