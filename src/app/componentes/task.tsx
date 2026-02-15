@@ -119,7 +119,7 @@ const Task = ({
       <div
         className={`flex gap-2 justify-center ${checkActive ? "text-green-600" : ""}`}
       >
-        <p>Prazo: {NewDates?.toLocaleDateString()}</p>
+        <p>Prazo: {NewDates?.toLocaleDateString("pt-BR")}</p>
         <p>
           {userDate?.toLocaleTimeString("pt-BR", {
             hour: "2-digit",

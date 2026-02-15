@@ -93,7 +93,7 @@ const Header = () => {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-600 ">
-      <div className="rounded-4xl bg-gray-400 py-6 px-5  h-[95vh] w-[90vw] lg:h-[80vh] lg:w-[40vw] lg:px-20 overflow-y-auto no-scrollbar">
+      <div className="rounded-4xl bg-gray-400 py-6 px-5  h-[88vh] w-[90vw] lg:h-[80vh] lg:w-[40vw] lg:px-20 overflow-y-auto no-scrollbar">
         <h1 className="text-lg font-medium text-center">Adicione sua tarefa</h1>
         <section className="flex items-center mt-6 gap-3 justify-center">
           <div>
