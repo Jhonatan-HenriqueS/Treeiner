@@ -34,7 +34,6 @@ const Task = ({
   dateInitial,
   date,
   checkActive,
-  dangerZone,
   dateUser,
   onCheck,
   deleteTask,
