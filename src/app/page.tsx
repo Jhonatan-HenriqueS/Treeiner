@@ -92,7 +92,7 @@ const Header = () => {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-600 ">
-      <div className="rounded-4xl bg-gray-400 py-6 px-20 h-[80vh] w-[40vw] overflow-y-auto no-scrollbar">
+      <div className="rounded-4xl bg-gray-400 py-6 px-5  h-[95vh] w-[90vw] lg:h-[80vh] lg:w-[40vw] lg:px-20 overflow-y-auto no-scrollbar">
         <h1 className="text-lg font-medium text-center">Adicione sua tarefa</h1>
         <section className="flex items-center mt-6 gap-3 justify-center">
           <div>
@@ -111,17 +111,18 @@ const Header = () => {
                 onClick={() => {
                   setDangerZone(true);
                   setDateInitial(new Date().toISOString());
+                  setDateUser(new Date());
                 }}
               >
                 <Plus className="mx-2" />
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className="flex flex-col justify-center items-center p-6 ">
+            <AlertDialogContent className="w-[80vw] max-h-[90vh] overflow-y-auto no-scrollbar p-6 py-10 flex flex-col items-center">
               <AlertDialogHeader>
                 <AlertDialogTitle className="w-full text-center">
-                  Descreva como deverá ser seu check-list
+                  Crie sua tarefa
                 </AlertDialogTitle>
-                <section className="flex flex-col gap-5">
+                <section className="flex flex-col gap-5 justify-center mt-5 w-full">
                   <div>
                     <Inputs
                       type="text"
@@ -131,9 +132,6 @@ const Header = () => {
                     />
                   </div>
                   <div>
-                    <h2 className="w-full text-center font-medium ">
-                      Descreva como deverá ser esta tarefa:
-                    </h2>
                     <Inputs
                       type="text"
                       placeholder="Descrição da tarefa"
@@ -142,25 +140,24 @@ const Header = () => {
                     />
                   </div>
                   <div>
-                    <h2 className="w-full text-center font-medium ">
-                      Qual o horario de entrega desta tarefa?:
-                    </h2>
                     <Inputs
                       type="time"
                       placeholder={
                         dateUser?.toLocaleTimeString("pt-BR") ||
                         "Selecione o horário"
                       }
-                      value={dateUser?.toLocaleTimeString("pt-BR") || ""}
+                      value={
+                        dateUser?.toLocaleTimeString("pt-BR", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }) || ""
+                      }
                       onChange={(e) =>
                         setDateUser(new Date(`1970-01-01T${e.target.value}`))
                       }
                     />
                   </div>
                   <div className="flex flex-col justify-center items-center">
-                    <h2 className="w-full text-center font-medium mb-2">
-                      Para quando deverá ser finalizado esta tarefa?
-                    </h2>
                     <Calendar
                       mode="single"
                       required={true}
@@ -184,7 +181,7 @@ const Header = () => {
                 onCheck={() => checkTask("1")}
                 deleteTask={() => deleteTask("1")}
               />
-              <AlertDialogFooter>
+              <AlertDialogFooter className="flex">
                 <AlertDialogCancel onClick={() => setDangerZone(false)}>
                   Cancelar
                 </AlertDialogCancel>
