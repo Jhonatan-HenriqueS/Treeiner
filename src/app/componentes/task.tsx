@@ -50,8 +50,8 @@ const Task = ({
         toast(
           <div>
             <h3 className="font-bold">Informações da Tarefa: </h3>
-            <p className="font-medium">{title}</p>
-            <p>{description}</p>
+            <p className="font-medium">Título: {title}</p>
+            <p>Descrição: {description}</p>
           </div>,
         )
       }
