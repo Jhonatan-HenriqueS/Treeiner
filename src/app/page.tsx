@@ -205,14 +205,7 @@ const Header = () => {
           {taskList.map((task) => (
             <Task
               key={task.id}
-              id={task.id}
-              title={task.title}
-              description={task.description}
-              dateInitial={task.dateInitial}
-              date={task.date}
-              checkActive={task.checkActive}
-              dangerZone={task.dangerZone}
-              dateUser={task.dateUser}
+              {...task} //Passa todos os valores de task
               onCheck={() => checkTask(task.id)}
               deleteTask={() => deleteTask(task.id)}
             />

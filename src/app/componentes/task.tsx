@@ -84,6 +84,7 @@ const Task = ({
               <Button
                 variant="destructive"
                 className=" bg-red-600 hover:bg-red-700 p-3 mr-4 rounded-full cursor-pointer transition-all "
+                onClick={(e) => e.stopPropagation()}
               >
                 <Trash2Icon className="text-gray-200" />
               </Button>
@@ -98,10 +99,19 @@ const Task = ({
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel variant="outline">
+                <AlertDialogCancel
+                  variant="outline"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   Cancelar
                 </AlertDialogCancel>
-                <AlertDialogAction variant="destructive" onClick={deleteTask}>
+                <AlertDialogAction
+                  variant="destructive"
+                  onClick={(e) => {
+                    deleteTask?.(); //Verifica se deleteTask existe, se existir, retorna sua função padrão, caso contrário, faça nada
+                    e.stopPropagation();
+                  }}
+                >
                   Deletar
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -110,7 +120,10 @@ const Task = ({
         ) : (
           <Button
             className={`p-3 mr-4 bg-green-600 hover:bg-green-700 rounded-full cursor-pointer transition-all `}
-            onClick={onCheck}
+            onClick={(e) => {
+              onCheck();
+              e.stopPropagation();
+            }}
           >
             <Check className="text-gray-200" />
           </Button>
